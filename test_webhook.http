@@ -1,0 +1,41 @@
+### Health Check
+GET http://127.0.0.1:8000/health
+
+### 1. Valid Payment Webhook (HTTP 202)
+POST http://127.0.0.1:8000/webhook/v1/payments
+Content-Type: application/json
+
+{
+    "vendor_transaction_id": "TXN-VENDOR-99812",
+    "user_reference": "USR-4421",
+    "amount_in_kobo": 750000,
+    "currency": "NGN",
+    "status": "SUCCESS",
+    "signature": "a8f9c123d4e5f667"
+}
+
+### 2. Invalid Status Payload (HTTP 422 - Schema Failure)
+POST http://127.0.0.1:8000/webhook/v1/payments
+Content-Type: application/json
+
+{
+    "vendor_transaction_id": "TXN-VENDOR-99813",
+    "user_reference": "USR-4421",
+    "amount_in_kobo": 500000,
+    "currency": "NGN",
+    "status": "UNKNOWN_STATUS",
+    "signature": "a8f9c123d4e5f667"
+}
+
+### 3. Unsupported Currency (HTTP 400 - Custom Business Logic)
+POST http://127.0.0.1:8000/webhook/v1/payments
+Content-Type: application/json
+
+{
+    "vendor_transaction_id": "TXN-VENDOR-99814",
+    "user_reference": "USR-4421",
+    "amount_in_kobo": 500000,
+    "currency": "USD",
+    "status": "SUCCESS",
+    "signature": "a8f9c123d4e5f667"
+}
