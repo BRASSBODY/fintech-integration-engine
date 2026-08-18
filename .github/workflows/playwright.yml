@@ -1,4 +1,3 @@
-Set-Content -Path ".github\workflows\playwright.yml" -Value @"
 name: Playwright Regression Pipeline
 
 on:
@@ -30,6 +29,8 @@ jobs:
         playwright install --with-deps chromium
 
     - name: Execute Playwright test suite
+      env:
+        PYTHONPATH: .
       run: |
         pytest --browser chromium
 
@@ -40,4 +41,3 @@ jobs:
         name: playwright-execution-report
         path: report.html
         retention-days: 7
-"@
