@@ -32,7 +32,7 @@ jobs:
       env:
         PYTHONPATH: .
       run: |
-        pytest --browser chromium
+        pytest --browser chromium --html=report.html
 
     - name: Upload HTML Test Report
       if: always()
