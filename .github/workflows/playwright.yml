@@ -16,10 +16,8 @@ jobs:
 
     - name: Set up Python 3.12
       uses: actions/setup-python@v5.4.0
-
-    - name: Upload HTML Test Report
-      if: always()
-      uses: actions/upload-artifact@v4.4.3
+      with:
+        python-version: "3.12"
 
     - name: Install dependencies
       run: |
