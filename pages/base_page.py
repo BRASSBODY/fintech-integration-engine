@@ -1,35 +1,30 @@
-# pages/base_page.py
-from playwright.sync_api import Locator, Page
+from playwright.sync_api import Page, Locator
 
 
 class BasePage:
-    """Master Page Object parent class wrapping Playwright primitives."""
-
     def __init__(self, page: Page):
-        # 'self' binds the Playwright page instance to this object
         self.page = page
 
-    def navigate(self, path: str = ""):
-        """Navigates to a target path or base URL."""
-        self.page.goto(path)
+    def navigate(self, url: str) -> None:
+        """Navigates to URL as soon as DOM content loads, preventing network timeouts."""
+        self.page.goto(url, wait_until="domcontentloaded", timeout=60000)
 
     def find_element(self, selector: str) -> Locator:
-        """Returns a Playwright Locator with built-in auto-waiting."""
+        """Returns a Playwright Locator object."""
         return self.page.locator(selector)
 
-    def click(self, selector: str):
-        """Waits for element readiness and clicks it."""
-        self.find_element(selector).click()
+    def click_element(self, selector: str) -> None:
+        """Clicks on an element matching the selector."""
+        self.page.locator(selector).click()
 
-    def type_text(self, selector: str, text: str):
-        """Clears an input field and types new text."""
-        locator = self.find_element(selector)
-        locator.fill(text)
+    def fill_text(self, selector: str, text: str) -> None:
+        """Fills text into an input field."""
+        self.page.locator(selector).fill(text)
 
     def get_text(self, selector: str) -> str:
-        """Extracts inner text from an element."""
-        return self.find_element(selector).inner_text()
+        """Returns inner text of an element."""
+        return self.page.locator(selector).inner_text()
 
-    def is_visible(self, selector: str) -> bool:
-        """Checks if an element is visible on the screen."""
-        return self.find_element(selector).is_visible()
+    def select_option_by_value(self, selector: str, value: str) -> None:
+        """Selects an option from a standard HTML <select> dropdown by value."""
+        self.page.locator(selector).select_option(value=value)

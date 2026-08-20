@@ -22,10 +22,13 @@ class LoginPage(BasePage):
 
     def login(self, username: str = settings.STANDARD_USER, password: str = settings.PASSWORD):
         """Fills credentials and submits the login form."""
-        self.type_text(self._username_input, username)
-        self.type_text(self._password_input, password)
-        self.click(self._login_button)
+        self.fill_text(self._username_input, username)
+        self.fill_text(self._password_input, password)
+        self.click_element(self._login_button)
 
     def get_error_message(self) -> str:
         """Retrieves text from the error banner on failed login."""
         return self.get_text(self._error_message)
+
+
+        
