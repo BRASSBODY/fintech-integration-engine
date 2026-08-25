@@ -77,3 +77,12 @@ def api_client(playwright: Playwright) -> APIClient:
     client = APIClient(request=context, base_url="https://jsonplaceholder.typicode.com")
     yield client
     context.dispose()
+
+
+@pytest.fixture
+def db_connection():
+    """Simulates a database connection for backend assertions."""
+    # Setup mock DB session/connection
+    db = {"users": [{"username": "standard_user", "status": "active"}]}
+    yield db
+    # Teardown logic here
